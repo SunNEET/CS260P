@@ -29,8 +29,8 @@ void LCS(const string& X, const string& Y, int n, int m, int len, unordered_set<
         return;
     }
     if(n == 0 || m == 0) return;
-
     int i = n, j = m;
+    if(!L[i][j] && !L[i-1][j] && !L[i][j-1] && !L[i-1][j-1]) return;
     if (X[i - 1] == Y[j - 1]) {
         LCS(X,Y,i-1,j-1,len,res,str,L);
         str[len-1] = X[i-1];
@@ -58,8 +58,9 @@ vector<vector<int> > LCSTable(string X, string Y, int n){
 int main()
 {
     freopen("in","r", stdin);
-    
+    int maxCount = 0;
     int n, x, y;
+    n = 14;
     printf("Enter value of n in range [3:20] : ");
     scanf(" %d", &n);
     if(n < 3 || n > 20) {
@@ -79,6 +80,7 @@ int main()
         puts("Invalid input y");
         return 0;
     }
+    int ans_x = 0, ans_y = 0, maxCnt = 0; 
     string sx = int_to_bits(x, n);
     string sy = int_to_bits(y, n);
     printf("LCS's from X = %s\n", sx.c_str());
@@ -90,6 +92,11 @@ int main()
 
     unordered_set<string> res;
     LCS(sx,sy,n,n,len,res,str,lcsTable);
+    if(res.size() > maxCnt) {
+        maxCnt = (int)res.size();
+        ans_x = x;
+        ans_y = y;
+    }
     for(auto e : res) printf("%s\n", e.c_str());
     return 0;
 }
