@@ -15,20 +15,24 @@ using namespace std;
 string inputMode;
 std::ifstream infile("input");
 
-string binstring(int x, int n) {
+string binstring(int x, int n)
+{
     string res = "";
     for (int i = 0; i < n; i++)
         res += "0";
     int cnt = 0;
-    while (x) {
+    while (x)
+    {
         res[n - 1 - cnt++] = (x & 1) + '0';
         x >>= 1;
     }
     return res;
 }
 
-void CountLCS(const string &X, const string &Y, int n, int m, int len, unordered_set<string> &res, string &str, const vector<vector<int>> &L) {
-    if (len == 0) {
+void CountLCS(const string &X, const string &Y, int n, int m, int len, unordered_set<string> &res, string &str, const vector<vector<int>> &L)
+{
+    if (len == 0)
+    {
         res.insert(str);
         return;
     }
@@ -37,11 +41,14 @@ void CountLCS(const string &X, const string &Y, int n, int m, int len, unordered
     int i = n, j = m;
     if (!L[i][j] && !L[i - 1][j] && !L[i][j - 1] && !L[i - 1][j - 1])
         return;
-    if (X[i - 1] == Y[j - 1]) {
+    if (X[i - 1] == Y[j - 1])
+    {
         CountLCS(X, Y, i - 1, j - 1, len, res, str, L);
         str[len - 1] = X[i - 1];
         CountLCS(X, Y, i - 1, j - 1, len - 1, res, str, L);
-    } else {
+    }
+    else
+    {
         if (L[i - 1][j] >= L[i][j - 1])
             CountLCS(X, Y, i - 1, j, len, res, str, L);
         if (L[i][j - 1] >= L[i - 1][j])
@@ -49,10 +56,13 @@ void CountLCS(const string &X, const string &Y, int n, int m, int len, unordered
     }
 }
 
-vector<vector<int>> LCSTable(string X, string Y, int n) {
+vector<vector<int>> LCSTable(string X, string Y, int n)
+{
     vector<vector<int>> L(n + 1, vector<int>(n + 1, 0));
-    for (int i = 0; i <= n; i++) {
-        for (int j = 0; j <= n; j++) {
+    for (int i = 0; i <= n; i++)
+    {
+        for (int j = 0; j <= n; j++)
+        {
             if (i == 0 || j == 0)
                 L[i][j] = 0;
             else if (X[i - 1] == Y[j - 1])
@@ -64,13 +74,14 @@ vector<vector<int>> LCSTable(string X, string Y, int n) {
     return L;
 }
 
-int main() {
+int main()
+{
     int n, x, y;
     int inputMode;
     string keepAlive = "Y";
     int maxCount = 0;
 
-    printf("Enter mode for input (1: manual | 2: file): ");
+    printf("Enter mode for input (1:manual|2:file): ");
     scanf(" %d", &inputMode);
 
     // freopen("input", "r", stdin);
@@ -154,9 +165,9 @@ int main() {
         if (formatCount % 3 != 1)
             printf("\n");
 
+        printf("----- Program End   -----\n");
         if (inputMode == 1)
         {
-            printf("----- Program End   -----\n");
             char in;
             printf("Continue? (Y/N): ");
             cin >> in;
